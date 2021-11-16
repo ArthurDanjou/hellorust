@@ -8,6 +8,8 @@ fn main() {
 
     let secret_number = rand::thread_rng().gen_range(1..101);
 
+    let mut attempts: Vec<u32> = Vec::new();
+
     loop {
         println!("Please enter a guess");
 
@@ -23,10 +25,17 @@ fn main() {
         };
 
         match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small"),
-            Ordering::Greater => println!("Too big"),
+            Ordering::Less => {
+                println!("Too small");
+                attempts.insert(attempts.len(), guess);
+            },
+            Ordering::Greater => {
+                println!("Too big");
+                attempts.insert(attempts.len(), guess);
+            },
             Ordering::Equal => {
                 println!("You win! The result was {}", secret_number);
+                println!("Total attempts: {} {:?}", attempts.len(), attempts);
                 break;
             },
         }
